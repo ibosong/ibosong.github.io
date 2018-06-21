@@ -108,20 +108,24 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="没什么，就是个博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="开发的过程中，我们有时候需要在Activity启动以后第一时间获取某个View的宽高，并作相应处理，当我们在onCreate中通过View.getWidth（或getMeasuredWidth）和View.getHeight（或getMeasuredHeight）方法获取的时候，你会发现它们都返回0。我们猜测是因为，这个时候View还没有布局完成。解决的办法有很多种，比如在View的OnGloba">
+<meta property="og:type" content="article">
+<meta property="og:title" content="onCreate中获取View的宽高为0？">
+<meta property="og:url" content="http://yoursite.com/2017/03/03/onCreate中获取View的宽高为0？/index.html">
 <meta property="og:site_name" content="没什么，就是个博客">
+<meta property="og:description" content="开发的过程中，我们有时候需要在Activity启动以后第一时间获取某个View的宽高，并作相应处理，当我们在onCreate中通过View.getWidth（或getMeasuredWidth）和View.getHeight（或getMeasuredHeight）方法获取的时候，你会发现它们都返回0。我们猜测是因为，这个时候View还没有布局完成。解决的办法有很多种，比如在View的OnGloba">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2017-03-03T07:03:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="没什么，就是个博客">
+<meta name="twitter:title" content="onCreate中获取View的宽高为0？">
+<meta name="twitter:description" content="开发的过程中，我们有时候需要在Activity启动以后第一时间获取某个View的宽高，并作相应处理，当我们在onCreate中通过View.getWidth（或getMeasuredWidth）和View.getHeight（或getMeasuredHeight）方法获取的时候，你会发现它们都返回0。我们猜测是因为，这个时候View还没有布局完成。解决的办法有很多种，比如在View的OnGloba">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/03/03/onCreate中获取View的宽高为0？/"/>
 
 
 
@@ -131,7 +135,7 @@
   };
 </script>
 
-  <title>没什么，就是个博客</title>
+  <title>onCreate中获取View的宽高为0？ | 没什么，就是个博客</title>
   
 
 
@@ -178,8 +182,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -220,7 +223,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
   </li>
@@ -264,9 +267,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -298,11 +301,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/03/onCreate中获取View的宽高为0？/" itemprop="url">
-                  onCreate中获取View的宽高为0？
-                </a>
+          <h1 class="post-title" itemprop="name headline">onCreate中获取View的宽高为0？
               
             
           </h1>
@@ -361,9 +360,7 @@
       
 
       
-        
-          
-            <p>开发的过程中，我们有时候需要在<code>Activity</code>启动以后第一时间获取某个View的宽高，并作相应处理，当我们在<code>onCreate</code>中通过<code>View.getWidth</code>（或<code>getMeasuredWidth</code>）和<code>View.getHeight</code>（或<code>getMeasuredHeight</code>）方法获取的时候，你会发现它们都返回0。我们猜测是因为，这个时候View还没有布局完成。解决的办法有很多种，比如在<code>View</code>的<code>OnGlobalLayoutListener</code>中获取，在<code>onLayout</code>中获取等等，具体请参考StackOverflow：<br><a href="https://stackoverflow.com/questions/18861585/get-content-view-size-in-oncreate" target="_blank" rel="noopener">https://stackoverflow.com/questions/18861585/get-content-view-size-in-oncreate</a></p>
+        <p>开发的过程中，我们有时候需要在<code>Activity</code>启动以后第一时间获取某个View的宽高，并作相应处理，当我们在<code>onCreate</code>中通过<code>View.getWidth</code>（或<code>getMeasuredWidth</code>）和<code>View.getHeight</code>（或<code>getMeasuredHeight</code>）方法获取的时候，你会发现它们都返回0。我们猜测是因为，这个时候View还没有布局完成。解决的办法有很多种，比如在<code>View</code>的<code>OnGlobalLayoutListener</code>中获取，在<code>onLayout</code>中获取等等，具体请参考StackOverflow：<br><a href="https://stackoverflow.com/questions/18861585/get-content-view-size-in-oncreate" target="_blank" rel="noopener">https://stackoverflow.com/questions/18861585/get-content-view-size-in-oncreate</a></p>
 <p>有另外一个方法，有些人应该也知道，在<code>onCreate</code>中通过<code>View.post</code>，在其中的<code>Runnable</code>中就能获取到正确的宽高。那么，这里的原理是什么，很多人认为这里就是一个时间差，等<code>View</code>的<code>measure</code>和<code>layout</code>完了就有宽和高了，有些人甚至使用<code>postDelay</code>延迟几秒来确保万无一失。那么这里面到底会不会有不稳定的因素呢？这篇文章告诉你答案。</p>
 <p>本篇文章分析的是Android6.0系统的源码。阅读之前，请先了解Android中<code>Handler</code>，<code>Looper</code>和<code>MessageQueue</code>等概念，推荐文章：<a href="http://blog.csdn.net/lmj623565791/article/details/38377229/" target="_blank" rel="noopener">http://blog.csdn.net/lmj623565791/article/details/38377229/</a></p>
 <h1 id="详细分析："><a href="#详细分析：" class="headerlink" title="详细分析："></a>详细分析：</h1><p>请看<code>View.post</code>源码，</p>
@@ -395,8 +392,6 @@
 <p>需要注意的是， 在<code>onCreate</code>（以及<code>onStart</code>, <code>onResume</code>）方法中必须保证是在主线程调用<code>View.post</code>方法，因为<code>ViewRootImpl.getRunQueue()</code>在不同线程获取到的是不同的对象（为什么？请研究<code>getRunQueue()</code>的类型），所以在<code>onCreate</code>方法内新建线程并在里面post的时候，这个post是成功不了的。在Android 7.0中修复了这个问题，也就说7.0系统中，在<code>onCreate</code>方法中新建线程并在里面post，这个<code>Runnable</code>是可以被执行到的。感兴趣的看源码。</p>
 <h1 id="一句话总结："><a href="#一句话总结：" class="headerlink" title="一句话总结："></a>一句话总结：</h1><p>在<code>onCreate</code>中调用<code>View.post</code>的时候，post的<code>Runnable</code>被保存起来，在下一次遍历布局的时候重新加到消息队列里（Android 7.0是在attach window的时候重新加到消息队列里），而且布局遍历本身也是加到消息队列执行的，所以我们post的<code>Runnable</code>所在的消息肯定是在布局遍历之后，所以在<code>Runnable</code>里必定可以获取到正确的宽高。</p>
 
-          
-        
       
     </div>
 
@@ -416,12 +411,12 @@
       
 
       
+      
+      
 
       
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -431,14 +426,19 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -459,8 +459,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -505,6 +514,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#详细分析："><span class="nav-number">1.</span> <span class="nav-text">详细分析：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一句话总结："><span class="nav-number">2.</span> <span class="nav-text">一句话总结：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -632,6 +657,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
 
   
 

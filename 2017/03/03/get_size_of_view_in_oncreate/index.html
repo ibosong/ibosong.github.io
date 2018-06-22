@@ -241,6 +241,22 @@
         
         
           
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
@@ -382,6 +398,7 @@
       
         <p>开发的过程中，我们有时候需要在<code>Activity</code>启动以后第一时间获取某个View的宽高，并作相应处理，当我们在<code>onCreate</code>中通过<code>View.getWidth</code>（或<code>getMeasuredWidth</code>）和<code>View.getHeight</code>（或<code>getMeasuredHeight</code>）方法获取的时候，你会发现它们都返回0。我们猜测是因为，这个时候View还没有布局完成。解决的办法有很多种，比如在<code>View</code>的<code>OnGlobalLayoutListener</code>中获取，在<code>onLayout</code>中获取等等，具体请参考StackOverflow：<br><a href="https://stackoverflow.com/questions/18861585/get-content-view-size-in-oncreate" target="_blank" rel="noopener">https://stackoverflow.com/questions/18861585/get-content-view-size-in-oncreate</a></p>
 <p>有另外一个方法，有些人应该也知道，在<code>onCreate</code>中通过<code>View.post</code>，在其中的<code>Runnable</code>中就能获取到正确的宽高。那么，这里的原理是什么，很多人认为这里就是一个时间差，等<code>View</code>的<code>measure</code>和<code>layout</code>完了就有宽和高了，有些人甚至使用<code>postDelay</code>延迟几秒来确保万无一失。那么这里面到底会不会有不稳定的因素呢？这篇文章告诉你答案。</p>
+<a id="more"></a>
 <p>本篇文章分析的是Android6.0系统的源码。阅读之前，请先了解Android中<code>Handler</code>，<code>Looper</code>和<code>MessageQueue</code>等概念，推荐文章：<a href="http://blog.csdn.net/lmj623565791/article/details/38377229/" target="_blank" rel="noopener">http://blog.csdn.net/lmj623565791/article/details/38377229/</a></p>
 <h1 id="详细分析："><a href="#详细分析：" class="headerlink" title="详细分析："></a>详细分析：</h1><p>请看<code>View.post</code>源码，</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">post</span><span class="params">(Runnable action)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> AttachInfo attachInfo = mAttachInfo;</span><br><span class="line">    <span class="keyword">if</span> (attachInfo != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> attachInfo.mHandler.post(action);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Assume that post will succeed later</span></span><br><span class="line">    ViewRootImpl.getRunQueue().post(action);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -641,6 +658,9 @@
 
 
 
+  
+  
+
 
 
 
@@ -664,6 +684,16 @@
   
   
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

@@ -3094,16 +3094,22 @@ ul.breadcrumb li+li:last-child {
 }
 .page-home {
   position: relative;
+  height: 100vh;
   min-height: 100vh;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   background:
     radial-gradient(circle at center top, rgba(255,255,255,0.15), transparent 34%),
     linear-gradient(180deg, #2bd5b8 0%, #1fc8d4 48%, #18b8e8 100%);
 }
 .home-body {
   background: #20cdd1;
+  height: 100vh;
   min-height: 100vh;
+  overflow: hidden;
+}
+.page-home .headband {
+  display: none;
 }
 .page-home .header,
 .page-home .github-corner,
@@ -3111,18 +3117,21 @@ ul.breadcrumb li+li:last-child {
   display: none;
 }
 .page-home .container {
-  min-height: 100vh;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
 }
 .page-home .main {
-  height: auto;
-  min-height: 100vh;
+  height: 100%;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  padding: 40px 0;
+  padding: 0;
+  overflow: hidden;
 }
 .page-home .main-inner {
   width: 100%;
@@ -3147,13 +3156,14 @@ ul.breadcrumb li+li:last-child {
   display: none !important;
 }
 .home-main {
-  min-height: 100vh;
+  height: 100%;
+  min-height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 80px 24px 48px;
+  padding: clamp(1.5rem, 4vw, 2.5rem) 1.5rem;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -3264,8 +3274,8 @@ ul.breadcrumb li+li:last-child {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 54px;
-  margin-top: 34px;
+  gap: clamp(1.75rem, 4vw, 3.375rem);
+  margin-top: clamp(1.625rem, 3vw, 2.125rem);
 }
 .home-wechat-wrap {
   position: relative;
@@ -3275,35 +3285,45 @@ ul.breadcrumb li+li:last-child {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  min-width: 116px;
+  gap: clamp(0.625rem, 1.4vw, 0.75rem);
+  min-width: clamp(5.75rem, 10vw, 7.25rem);
   padding: 0;
   border: none;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background: transparent;
   color: rgba(255,255,255,0.96);
-  font-size: 32px;
+  font-size: clamp(1.6875rem, 2.3vw, 2rem);
   transition: transform 0.18s ease, opacity 0.18s ease;
 }
 .home-social-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
+  width: clamp(3.625rem, 5vw, 4.25rem);
+  height: clamp(3.625rem, 5vw, 4.25rem);
   border-radius: 50%;
   background: rgba(255,255,255,0.12);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+  box-shadow: inset 0 0.0625rem 0 rgba(255,255,255,0.16);
 }
 .home-social-icon .fa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1em;
-  font-size: 30px;
+  font-size: 0.9375em;
   line-height: 1;
-  text-align: center;
+  transform: translateY(0.04em);
+}
+.home-social-icon .fa-weixin {
+  transform: translate(0.04em, 0.04em);
+}
+.home-social-icon .fa-envelope-o {
+  line-height: 1;
+  transform: translateY(0.04em);
 }
 .home-social-label {
   display: block;
-  font-size: 13px;
+  font-size: clamp(0.6875rem, 0.95vw, 0.8125rem);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -3312,7 +3332,7 @@ ul.breadcrumb li+li:last-child {
 .home-social-link:focus {
   color: #fff;
   opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 .home-icon-button {
   cursor: pointer;
@@ -3321,37 +3341,38 @@ ul.breadcrumb li+li:last-child {
 .wechat-overlay {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 18px);
+  bottom: calc(100% + 1rem);
   z-index: 20;
-  width: 280px;
-  margin-left: -140px;
+  width: min(17.5rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+  transform: translateX(-50%);
 }
 .wechat-overlay-panel {
   position: relative;
   width: 100%;
-  padding: 16px;
+  padding: clamp(0.75rem, 2vw, 1rem);
   background: linear-gradient(180deg, #ffffff 0%, #f6fbf8 100%);
   border: 1px solid rgba(255,255,255,0.72);
-  border-radius: 24px;
-  box-shadow: 0 24px 60px rgba(15,23,42,0.2);
+  border-radius: 1.5rem;
+  box-shadow: 0 1.5rem 3.75rem rgba(15,23,42,0.2);
   text-align: center;
 }
 .wechat-overlay-panel::after {
   position: absolute;
-  left: 50%;
-  bottom: -10px;
-  width: 20px;
-  height: 20px;
-  margin-left: -10px;
+  left: var(--wechat-arrow-left, 50%);
+  bottom: -0.625rem;
+  width: 1.25rem;
+  height: 1.25rem;
   content: '';
   background: #f6fbf8;
   border-right: 1px solid rgba(7,193,96,0.12);
   border-bottom: 1px solid rgba(7,193,96,0.12);
-  transform: rotate(45deg);
+  transform: translateX(-50%) rotate(45deg);
 }
 .wechat-overlay-image-frame {
+  position: relative;
   padding: 0;
-  border-radius: 18px;
+  border-radius: 1.125rem;
   background: linear-gradient(180deg, #ffffff 0%, #ecfdf3 100%);
   box-shadow: inset 0 0 0 1px rgba(7,193,96,0.1);
 }
@@ -3359,7 +3380,71 @@ ul.breadcrumb li+li:last-child {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 18px;
+  border-radius: 1.125rem;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.wechat-image-menu {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  min-width: clamp(8.5rem, 56%, 9.25rem);
+  padding: 0.5rem;
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 1.125rem 2.5rem rgba(15,23,42,0.18);
+  backdrop-filter: blur(16px);
+}
+.wechat-image-menu-item {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: #274252;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.wechat-image-menu-item + .wechat-image-menu-item {
+  margin-top: 0.25rem;
+}
+.wechat-image-menu-item:hover,
+.wechat-image-menu-item:focus {
+  background: rgba(7,193,96,0.1);
+  color: #0a7a40;
+}
+.wechat-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(7rem, 55%, 8.25rem);
+  margin-top: 0.875rem;
+  padding: 0.5625rem 1rem;
+  border: 1px solid rgba(7,193,96,0.24);
+  border-radius: 999px;
+  background: rgba(7,193,96,0.08);
+  color: #0f8f4c;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.wechat-copy-button:hover,
+.wechat-copy-button:focus {
+  background: rgba(7,193,96,0.12);
+  border-color: rgba(7,193,96,0.32);
+  color: #0a7a40;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .home-profile-avatar-ring {
@@ -3373,17 +3458,14 @@ ul.breadcrumb li+li:last-child {
     font-size: 28px;
   }
   .home-profile-links {
-    gap: 52px;
-  }
-  .wechat-overlay {
-    width: 260px;
-    margin-left: -130px;
+    gap: clamp(2rem, 4vw, 3.25rem);
   }
 }
 @media (max-width: 767px) {
   .home-main {
-    min-height: auto;
-    padding: 88px 20px 40px;
+    height: 100%;
+    min-height: 100%;
+    padding: clamp(1.25rem, 5vw, 2rem) 1rem;
   }
   .home-blog-link {
     width: 72px;
@@ -3415,33 +3497,30 @@ ul.breadcrumb li+li:last-child {
     font-size: 24px;
   }
   .home-profile-links {
-    gap: 28px;
-    margin-top: 26px;
+    gap: clamp(1.25rem, 6vw, 1.75rem);
+    margin-top: clamp(1.25rem, 5vw, 1.625rem);
   }
   .home-wechat-wrap {
-    position: static;
+    position: relative;
   }
   .home-social-link {
-    min-width: 96px;
-    gap: 10px;
-    font-size: 27px;
-  }
-  .home-social-icon {
-    width: 58px;
-    height: 58px;
+    min-width: clamp(5.25rem, 28vw, 6rem);
+    gap: clamp(0.5rem, 2.5vw, 0.625rem);
+    font-size: clamp(1.5rem, 7vw, 1.6875rem);
   }
   .home-social-label {
-    font-size: 11px;
+    font-size: clamp(0.625rem, 2.8vw, 0.6875rem);
     letter-spacing: 0.12em;
   }
   .wechat-overlay {
     left: 50%;
-    bottom: calc(100% + 14px);
-    width: min(260px, calc(100vw - 40px));
-    margin-left: calc(-1 * min(130px, calc((100vw - 40px) / 2)));
+    bottom: calc(100% + 0.875rem);
+    width: min(16.25rem, calc(100vw - 2rem), 85vw);
+    max-width: calc(100vw - 2rem);
+    transform: translateX(-50%);
   }
   .wechat-overlay-panel {
-    padding: 12px;
+    padding: clamp(0.75rem, 3.5vw, 0.875rem);
   }
 }
 @media (hover: none) {

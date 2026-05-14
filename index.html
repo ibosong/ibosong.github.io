@@ -277,16 +277,21 @@
                 <span class="home-social-icon"><i class="fa fa-envelope-o"></i></span>
                 <span class="home-social-label">Email</span>
               </a>
-              <div class="home-wechat-wrap" data-wechat-hover-zone>
+              <div class="home-wechat-wrap" data-wechat-hover-zone data-wechat-id="18501751755">
                 <button class="home-social-link home-icon-button" type="button" aria-label="WeChat" title="WeChat" data-wechat-trigger>
                   <span class="home-social-icon"><i class="fa fa-weixin"></i></span>
                   <span class="home-social-label">WeChat</span>
                 </button>
                 <div class="wechat-overlay" data-wechat-overlay hidden>
                   <div class="wechat-overlay-panel" aria-label="WeChat QR Code">
-                    <div class="wechat-overlay-image-frame">
-                      <img class="wechat-overlay-image" src="/images/wechat-qr.png" alt="WeChat QR for Halcyon" />
+                    <div class="wechat-overlay-image-frame" data-wechat-image-frame>
+                      <img class="wechat-overlay-image" src="/images/wechat-qr.png" alt="WeChat QR for 18501751755" data-wechat-image />
+                      <div class="wechat-image-menu" data-wechat-image-menu hidden>
+                        <button class="wechat-image-menu-item" type="button" data-wechat-menu-copy data-default-label="Copy WeChat">Copy WeChat</button>
+                        <button class="wechat-image-menu-item" type="button" data-wechat-menu-download data-default-label="Download QR">Download QR</button>
+                      </div>
                     </div>
+                    <button class="wechat-copy-button" type="button" data-wechat-copy>Copy WeChat</button>
                   </div>
                 </div>
               </div>
@@ -310,11 +315,26 @@
     var wechatTrigger = document.querySelector('[data-wechat-trigger]');
     var overlay = document.querySelector('[data-wechat-overlay]');
     var hoverZone = document.querySelector('[data-wechat-hover-zone]');
+    var copyButton = document.querySelector('[data-wechat-copy]');
+    var imageFrame = document.querySelector('[data-wechat-image-frame]');
+    var qrImage = document.querySelector('[data-wechat-image]');
+    var imageMenu = document.querySelector('[data-wechat-image-menu]');
+    var menuCopyButton = document.querySelector('[data-wechat-menu-copy]');
+    var menuDownloadButton = document.querySelector('[data-wechat-menu-download]');
     var hideTimer = null;
+    var copyButtonDefaultText = copyButton ? copyButton.textContent : '';
+    var copyButtonResetTimer = null;
+    var longPressTimer = null;
+    var imageMenuResetTimers = {};
 
     if (!wechatTrigger || !overlay || !hoverZone) return;
 
     var isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent);
+    var wechatId = hoverZone.getAttribute('data-wechat-id') || '';
+
+    function isOverlayOpen() {
+      return !overlay.hidden;
+    }
 
     function clearHideTimer() {
       if (hideTimer) {
@@ -325,12 +345,48 @@
 
     function closeOverlay() {
       clearHideTimer();
+      hideImageMenu();
       overlay.hidden = true;
+    }
+
+    function positionOverlay() {
+      if (!wechatTrigger || !overlay) return;
+
+      var wrapperRect = hoverZone.getBoundingClientRect();
+      var triggerRect = wechatTrigger.getBoundingClientRect();
+      var viewportPadding = 16;
+      var overlayWidth = overlay.offsetWidth;
+      var viewportWidth = document.documentElement.clientWidth;
+      var triggerCenter = triggerRect.left + triggerRect.width / 2;
+      var desiredLeft = triggerCenter - overlayWidth / 2;
+      var minLeft = viewportPadding;
+      var maxLeft = Math.max(viewportWidth - overlayWidth - viewportPadding, viewportPadding);
+      var clampedLeft = Math.min(Math.max(desiredLeft, minLeft), maxLeft);
+      var overlayLeft = clampedLeft - wrapperRect.left;
+      var arrowLeft = triggerCenter - clampedLeft;
+      var minArrowLeft = 24;
+      var maxArrowLeft = Math.max(overlayWidth - 24, minArrowLeft);
+
+      arrowLeft = Math.min(Math.max(arrowLeft, minArrowLeft), maxArrowLeft);
+
+      overlay.style.left = overlayLeft + 'px';
+      overlay.style.transform = 'none';
+      overlay.style.setProperty('--wechat-arrow-left', arrowLeft + 'px');
     }
 
     function openOverlay() {
       clearHideTimer();
       overlay.hidden = false;
+      positionOverlay();
+    }
+
+    function toggleOverlay() {
+      if (isOverlayOpen()) {
+        closeOverlay();
+        return;
+      }
+
+      openOverlay();
     }
 
     function queueCloseOverlay() {
@@ -338,18 +394,234 @@
       hideTimer = window.setTimeout(closeOverlay, 1000);
     }
 
-    wechatTrigger.addEventListener('click', function() {
-      window.location.href = 'weixin://dl/add';
+    function clearLongPressTimer() {
+      if (longPressTimer) {
+        window.clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    }
+
+    function hideImageMenu() {
+      clearLongPressTimer();
+
+      if (!imageMenu) return;
+
+      imageMenu.hidden = true;
+    }
+
+    function showImageMenu(clientX, clientY) {
+      if (!imageFrame || !imageMenu) return;
+
+      imageMenu.hidden = false;
+
+      var frameRect = imageFrame.getBoundingClientRect();
+      var menuWidth = imageMenu.offsetWidth;
+      var menuHeight = imageMenu.offsetHeight;
+      var left = clientX - frameRect.left;
+      var top = clientY - frameRect.top;
+      var maxLeft = Math.max(frameRect.width - menuWidth - 10, 10);
+      var maxTop = Math.max(frameRect.height - menuHeight - 10, 10);
+
+      left = Math.min(Math.max(left, 10), maxLeft);
+      top = Math.min(Math.max(top, 10), maxTop);
+
+      imageMenu.style.left = left + 'px';
+      imageMenu.style.top = top + 'px';
+    }
+
+    function setCopyButtonText(message) {
+      if (!copyButton) return;
+
+      copyButton.textContent = message;
+
+      if (copyButtonResetTimer) {
+        window.clearTimeout(copyButtonResetTimer);
+      }
+
+      copyButtonResetTimer = window.setTimeout(function() {
+        copyButton.textContent = copyButtonDefaultText;
+      }, 1600);
+    }
+
+    function setTemporaryMenuButtonText(button, message) {
+      if (!button) return;
+
+      var defaultLabel = button.getAttribute('data-default-label') || button.textContent;
+      var buttonKey = button.getAttribute('data-default-label') || button.textContent;
+
+      button.textContent = message;
+
+      if (imageMenuResetTimers[buttonKey]) {
+        window.clearTimeout(imageMenuResetTimers[buttonKey]);
+      }
+
+      imageMenuResetTimers[buttonKey] = window.setTimeout(function() {
+        button.textContent = defaultLabel;
+      }, 1600);
+    }
+
+    function copyTextWithFallback(text) {
+      var temporaryInput = document.createElement('textarea');
+      temporaryInput.value = text;
+      temporaryInput.setAttribute('readonly', 'readonly');
+      temporaryInput.style.position = 'absolute';
+      temporaryInput.style.left = '-9999px';
+      document.body.appendChild(temporaryInput);
+      temporaryInput.select();
+
+      var didCopy = false;
+
+      try {
+        didCopy = document.execCommand('copy');
+      } catch (error) {
+        didCopy = false;
+      }
+
+      document.body.removeChild(temporaryInput);
+
+      return didCopy;
+    }
+
+    function copyWechatId(feedbackButton) {
+      if (!wechatId) {
+        setCopyButtonText('Unavailable');
+        setTemporaryMenuButtonText(feedbackButton, 'Unavailable');
+        return;
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(wechatId).then(function() {
+          setCopyButtonText('Copied');
+          setTemporaryMenuButtonText(feedbackButton, 'Copied');
+        }).catch(function() {
+          if (copyTextWithFallback(wechatId)) {
+            setCopyButtonText('Copied');
+            setTemporaryMenuButtonText(feedbackButton, 'Copied');
+            return;
+          }
+
+          setCopyButtonText('Retry');
+          setTemporaryMenuButtonText(feedbackButton, 'Retry');
+        });
+
+        return;
+      }
+
+      if (copyTextWithFallback(wechatId)) {
+        setCopyButtonText('Copied');
+        setTemporaryMenuButtonText(feedbackButton, 'Copied');
+        return;
+      }
+
+      setCopyButtonText('Retry');
+      setTemporaryMenuButtonText(feedbackButton, 'Retry');
+    }
+
+    function downloadWechatImage(feedbackButton) {
+      if (!qrImage) {
+        setTemporaryMenuButtonText(feedbackButton, 'Retry');
+        return;
+      }
+
+      var downloadLink = document.createElement('a');
+      var imageUrl = qrImage.currentSrc || qrImage.getAttribute('src');
+
+      downloadLink.href = imageUrl;
+      downloadLink.download = 'wechat-qr.png';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      setTemporaryMenuButtonText(feedbackButton, 'Started');
+    }
+
+    wechatTrigger.addEventListener('click', function(event) {
+      event.preventDefault();
+      toggleOverlay();
     });
 
-    if (!isMobileDevice) {
-      hoverZone.addEventListener('mouseenter', openOverlay);
-      hoverZone.addEventListener('mouseleave', queueCloseOverlay);
-      overlay.addEventListener('mouseenter', openOverlay);
-      overlay.addEventListener('mouseleave', queueCloseOverlay);
-      wechatTrigger.addEventListener('focus', openOverlay);
-      wechatTrigger.addEventListener('blur', queueCloseOverlay);
+    if (copyButton) {
+      copyButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        copyWechatId();
+      });
     }
+
+    if (qrImage && imageFrame && imageMenu) {
+      qrImage.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        showImageMenu(event.clientX, event.clientY);
+      });
+
+      qrImage.addEventListener('touchstart', function(event) {
+        if (!event.touches || event.touches.length !== 1) return;
+
+        clearLongPressTimer();
+
+        var touch = event.touches[0];
+
+        longPressTimer = window.setTimeout(function() {
+          showImageMenu(touch.clientX, touch.clientY);
+        }, 420);
+      }, { passive: true });
+
+      qrImage.addEventListener('touchend', clearLongPressTimer);
+      qrImage.addEventListener('touchcancel', clearLongPressTimer);
+      qrImage.addEventListener('touchmove', clearLongPressTimer);
+
+      imageMenu.addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
+    }
+
+    if (menuCopyButton) {
+      menuCopyButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        copyWechatId(menuCopyButton);
+        hideImageMenu();
+      });
+    }
+
+    if (menuDownloadButton) {
+      menuDownloadButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        downloadWechatImage(menuDownloadButton);
+        hideImageMenu();
+      });
+    }
+
+    document.addEventListener('click', function(event) {
+      if (!isOverlayOpen()) return;
+      if (imageMenu && imageMenu.contains(event.target)) return;
+      if (hoverZone.contains(event.target)) return;
+      closeOverlay();
+    });
+
+    document.addEventListener('click', function(event) {
+      if (!imageMenu || imageMenu.hidden) return;
+      if (imageMenu.contains(event.target)) return;
+      if (qrImage && qrImage.contains(event.target)) return;
+      hideImageMenu();
+    });
+
+    window.addEventListener('scroll', hideImageMenu, true);
+    window.addEventListener('resize', function() {
+      hideImageMenu();
+
+      if (isOverlayOpen()) {
+        positionOverlay();
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        hideImageMenu();
+        closeOverlay();
+      }
+    }
+    );
 
     window.setTimeout(function() {
       var waveLayer = document.querySelector('body > div[style*="position: fixed"]');

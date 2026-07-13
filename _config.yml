@@ -1,0 +1,27 @@
+title: 花椒，波澜不惊
+description: Java, Android
+url: https://ibosong.github.io
+baseurl: ""
+lang: zh-CN
+timezone: Asia/Shanghai
+
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+permalink: /:year/:month/:day/:title/
+
+# Jekyll 3（GitHub Pages）中自定义 exclude 会覆盖默认列表，因此显式列出
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post

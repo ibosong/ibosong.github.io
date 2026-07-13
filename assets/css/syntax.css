@@ -1,0 +1,15 @@
+/* Rouge (Jekyll) 代码高亮，配色对齐旧主题的 Tomorrow 浅色方案 */
+.highlight pre.highlight { padding: 10px; }
+.highlight .c, .highlight .c1, .highlight .cm, .highlight .cp, .highlight .cs { color: #8e908c; font-style: italic; }
+.highlight .err { color: #c82829; }
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv, .highlight .ow { color: #8959a8; }
+.highlight .kt, .highlight .nc { color: #eab700; }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .sh, .highlight .si, .highlight .sx { color: #718c00; }
+.highlight .sr, .highlight .se { color: #3e999f; }
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .mx, .highlight .il { color: #f5871f; }
+.highlight .na, .highlight .nb, .highlight .nf, .highlight .bp { color: #4271ae; }
+.highlight .nt, .highlight .nv, .highlight .no, .highlight .vc, .highlight .vg, .highlight .vi { color: #c82829; }
+.highlight .o { color: #3e999f; }
+.highlight .gd { color: #c82829; background-color: #fdd; }
+.highlight .gi { color: #718c00; background-color: #dfd; }
+.highlight .gh, .highlight .gu { color: #4d4d4c; font-weight: bold; }

@@ -1,6 +1,6 @@
 ---
 title: onCreate中获取View的宽高为0？
-date: 2017-03-03 15:03:00
+date: 2017-03-03 15:03:00 +0800
 categories:
   - Android
 tags:

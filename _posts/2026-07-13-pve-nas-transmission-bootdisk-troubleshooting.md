@@ -1,6 +1,6 @@
 ---
 title: PVE 虚拟机 Bootdisk 被写满：从 NAS 挂载失效的排查，到自动化检测方案
-date: 2026-07-13 10:00:00
+date: 2026-07-13 10:00:00 +0800
 categories:
   - Linux
   - PVE

@@ -230,6 +230,8 @@ NAS 的 TCP 445 端口是否可达（5 秒超时）
 
 ### 安装与使用
 
+完整脚本可直接下载：[install-transmission-nas-guard.sh](/assets/scripts/install-transmission-nas-guard.sh)、[uninstall-transmission-nas-guard.sh](/assets/scripts/uninstall-transmission-nas-guard.sh)。
+
 ```bash
 chmod +x install-transmission-nas-guard.sh
 sudo ./install-transmission-nas-guard.sh \

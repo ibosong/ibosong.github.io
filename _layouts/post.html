@@ -10,6 +10,13 @@ layout: default
           <time class="post-time" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}">
             {{ page.date | date: "%Y-%m-%d" }}
           </time>
+          {% if page.tags %}
+            <div class="post-tags">
+              {% for tag in page.tags %}
+                <a href="{{ '/tags/' | relative_url }}#{{ tag | slugify }}">#{{ tag }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
       </header>
       <div class="post-body" itemprop="articleBody">

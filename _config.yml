@@ -11,6 +11,14 @@ kramdown:
   input: GFM
 permalink: /:year/:month/:day/:title/
 
+# 评论保存在当前仓库的 Announcements 分类中，配置步骤见 README。
+giscus:
+  enabled: true
+  repo: ibosong/ibosong.github.io
+  repo_id: MDEwOlJlcG9zaXRvcnkxMzgxNDc5ODM=
+  category: Announcements
+  category_id: DIC_kwDOCDv4j84DIlQ3
+
 # Jekyll 3（GitHub Pages）中自定义 exclude 会覆盖默认列表，因此显式列出
 exclude:
   - README.md

@@ -24,4 +24,28 @@ layout: default
       </div>
     </div>
   </article>
+  {% if site.giscus.enabled == true and page.comments != false %}
+    {% if site.giscus.repo and site.giscus.repo != empty and site.giscus.repo_id and site.giscus.repo_id != empty and site.giscus.category and site.giscus.category != empty and site.giscus.category_id and site.giscus.category_id != empty %}
+      <section class="comments" aria-labelledby="comments-title">
+        <h2 id="comments-title">评论</h2>
+        <div class="giscus"></div>
+        <script src="https://giscus.app/client.js"
+                data-repo="{{ site.giscus.repo | escape }}"
+                data-repo-id="{{ site.giscus.repo_id | escape }}"
+                data-category="{{ site.giscus.category | escape }}"
+                data-category-id="{{ site.giscus.category_id | escape }}"
+                data-mapping="pathname"
+                data-strict="1"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="light"
+                data-lang="zh-CN"
+                data-loading="lazy"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    {% endif %}
+  {% endif %}
 </div>
